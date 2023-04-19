@@ -1,0 +1,43 @@
+a {
+  text-decoration: none;
+  color: inherit;
+}
+a:hover {
+  color: inherit;
+}
+.cursor-pointer {
+  cursor: pointer;
+}
+.hw-42 {
+  height: 42px;
+  width: 42px;
+}
+.h-200{
+  height: 200px;
+  
+}
+.object-contain{
+  object-fit: contain;
+}
+.bg-blur {
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+.fs-14{
+  font-size: 14px;
+}
+.rounded-5 {
+  border-radius: 5px;
+}
+.rounded-8 {
+  border-radius: 8px;
+}
+.rounded-10 {
+  border-radius: 10px;
+}
+.rounded-15 {
+  border-radius: 15px;
+}
+.rounded-20 {
+  border-radius: 20px;
+}
