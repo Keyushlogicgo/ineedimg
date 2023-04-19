@@ -1,8 +1,26 @@
 import React, { useState } from "react";
 import { Card, Col, Row } from "react-bootstrap";
+import Compressor from "compressorjs";
+import saveAs from "save-as";
+import JSZip from "jszip";
 
 const Compress = () => {
   const [photo, setPhoto] = useState([]);
+
+  const [isCompress, setIsCompress] = useState(false);
+
+  const handleCompress = () => {
+    var filesArr = Array.prototype.slice.call(photo);
+    filesArr.forEach((item, key) => {
+      new Compressor(item.file, {
+        quality: 0.5, // 0.6 can also be used, but its not recommended to go below.
+        success: (res) => {
+          photo[key].file = res;
+        },
+      });
+    });
+    setIsCompress(true);
+  };
 
   const handlePhoto = (input) => {
     if (input.files) {
@@ -12,7 +30,12 @@ const Compress = () => {
         reader.onload = async function (e) {
           setPhoto((preData) => [
             ...preData,
-            { id: key, name: item.name, url: e.target.result },
+            {
+              id: key,
+              name: item.name,
+              url: e.target.result,
+              file: item,
+            },
           ]);
         };
         reader.readAsDataURL(item);
@@ -23,6 +46,27 @@ const Compress = () => {
   const handleRemove = async (index) => {
     var data = photo.filter((item) => item.id !== index);
     setPhoto(() => data);
+  };
+
+  const handleDownload = async (file) => {
+    console.log(file.name);
+    const blob = file;
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "compress" + file.name;
+    a.click();
+  };
+
+  const handleZipDownload = () => {
+    const zip = new JSZip();
+    const img = zip.folder("images");
+    for (let i = 0; i < photo.length; i++) {
+      img.file(photo[i].name, photo[i].file, { base64: true });
+    }
+    zip.generateAsync({ type: "blob" }).then(function (content) {
+      saveAs(content, "ineedimg.zip");
+    });
   };
 
   return (
@@ -81,6 +125,17 @@ const Compress = () => {
                         src={item.url}
                       />
                       <p className="text-center fs-14 mb-0 p-1">{item.name}</p>
+                      {isCompress ? (
+                        <button
+                          onClick={(e) => {
+                            handleDownload(item.file);
+                          }}
+                          type="button"
+                          className="btn btn-secondary w-100"
+                        >
+                          Download
+                        </button>
+                      ) : null}
                     </Card.Body>
                   </Card>
                 </Col>
@@ -88,6 +143,25 @@ const Compress = () => {
             })}
           </Row>
         </Card.Body>
+        <Card.Footer>
+          {isCompress ? (
+            <button
+              type="button"
+              className="btn btn-secondary w-100"
+              onClick={handleZipDownload}
+            >
+              Download All
+            </button>
+          ) : (
+            <button
+              type="button"
+              className="btn btn-secondary w-100"
+              onClick={handleCompress}
+            >
+              Compress
+            </button>
+          )}
+        </Card.Footer>
       </Card>
     </>
   );
