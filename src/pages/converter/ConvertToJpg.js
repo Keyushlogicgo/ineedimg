@@ -12,7 +12,7 @@ const ConvertToJpg = () => {
 
   const handleConvertToJpg = () => {
     var filesArr = Array.prototype.slice.call(photo);
-    filesArr.forEach((item, key) => {
+    filesArr.forEach(async (item, key) => {
       // new Compressor(item.file, {
       //   // quality: 0.5,
       //   convertTypes: "image/jpg",
@@ -23,23 +23,28 @@ const ConvertToJpg = () => {
       //   },
       // });
 
-      for (let i = 0; i < photo.length; i++) {
-        ImageResizer.imageFileResizer(
-          item.file,
-          300, // new width
-          300, // new height
-          "JPEG",
-          100, // quality
-          0,
-          async (uri) => {
-            // console.log(uri);
-            const fileData = await base64ToBlob(uri);
-            console.log("fileData", fileData);
-            photo[key].file = fileData;
-          },
-          "base64"
-        );
-      }
+      // for (let i = 0; i < photo.length; i++) {
+      //   ImageResizer.imageFileResizer(
+      //     item.file,
+      //     300, // new width
+      //     300, // new height
+      //     "JPEG",
+      //     100, // quality
+      //     0,
+      //     async (uri) => {
+      //       // console.log(uri);
+      //       const fileData = await base64ToBlob(uri);
+      //       console.log("fileData", fileData);
+      //       photo[key].file = fileData;
+      //     },
+      //     "base64"
+      //   );
+      // }
+
+      const imgData = await convertImageToJPEG(item.file);
+      console.log(imgData)
+      const newImg = await base64ToBlob(imgData);
+      console.log("newIMg", newImg);
     });
     setIsConvert(true);
   };
@@ -50,7 +55,28 @@ const ConvertToJpg = () => {
     return data;
   };
 
-  
+  const convertImageToJPEG = (file) => {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      img.onload = function () {
+        const canvas = document.createElement("canvas");
+        canvas.width = this.width;
+        canvas.height = this.height;
+
+        const ctx = canvas.getContext("2d");
+        ctx.drawImage(this, 0, 0);
+
+        const dataUrl = canvas.toDataURL("image/jpeg");
+
+        resolve(dataUrl);
+      };
+      img.onerror = function () {
+        reject(new Error("Failed to load image"));
+      };
+      img.src = URL.createObjectURL(file);
+    });
+  };
+
 
   return (
     <>
