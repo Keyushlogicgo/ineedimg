@@ -36,7 +36,7 @@ export const functionList = [
       "Crop JPG, PNG, or GIFs with ease; Choose pixels to define your rectangle or use our visual editor.",
   },
   {
-    url: "/",
+    url: "/convert-to-jpg",
     icon: <ConvertToJpgSvg className={classList} />,
     title: "convert to JPG",
     description:

@@ -2,25 +2,55 @@ import React, { useState } from "react";
 import { Card, Col, Row } from "react-bootstrap";
 import Compressor from "compressorjs";
 import useHelper from "../../hook/useHelper";
+import ImageResizer from "react-image-file-resizer";
 
-const Compress = () => {
+const ConvertToJpg = () => {
   const { zipDownload, singleDownload, handlePhoto, handleRemove, photo } =
     useHelper();
 
-  const [isCompress, setIsCompress] = useState(false);
+  const [isConvert, setIsConvert] = useState(false);
 
-  const handleCompress = () => {
+  const handleConvertToJpg = () => {
     var filesArr = Array.prototype.slice.call(photo);
     filesArr.forEach((item, key) => {
-      new Compressor(item.file, {
-        quality: 0.6,
-        success: (res) => {
-          photo[key].file = res;
-        },
-      });
+      // new Compressor(item.file, {
+      //   // quality: 0.5,
+      //   convertTypes: "image/jpg",
+      //   success: (res) => {
+      //     // var fileName = res.name.substr(0, res.name.lastIndexOf(".")) + ".jpg";
+      //     console.log("new", res);
+      //     photo[key].file = res;
+      //   },
+      // });
+
+      for (let i = 0; i < photo.length; i++) {
+        ImageResizer.imageFileResizer(
+          item.file,
+          300, // new width
+          300, // new height
+          "JPEG",
+          100, // quality
+          0,
+          async (uri) => {
+            // console.log(uri);
+            const fileData = await base64ToBlob(uri);
+            console.log("fileData", fileData);
+            photo[key].file = fileData;
+          },
+          "base64"
+        );
+      }
     });
-    setIsCompress(true);
+    setIsConvert(true);
   };
+
+  const base64ToBlob = async (url) => {
+    const response = await fetch(url);
+    const data = await response.blob();
+    return data;
+  };
+
+  
 
   return (
     <>
@@ -61,7 +91,11 @@ const Compress = () => {
                   key={key}
                   className="mb-3"
                 >
-                  <Card>
+                  <Card
+                    className={`h-100 ${
+                      isConvert ? "pb-5" : null
+                    }  position-relative`}
+                  >
                     <Card.Body className="p-0">
                       <button
                         onClick={(e) => {
@@ -78,13 +112,13 @@ const Compress = () => {
                         src={item.url}
                       />
                       <p className="text-center fs-14 mb-0 p-1">{item.name}</p>
-                      {isCompress ? (
+                      {isConvert ? (
                         <button
                           onClick={(e) => {
                             singleDownload(item.file);
                           }}
                           type="button"
-                          className="btn btn-secondary w-100"
+                          className="btn btn-secondary w-100 position-absolute bottom-0"
                         >
                           Download
                         </button>
@@ -97,7 +131,7 @@ const Compress = () => {
           </Row>
         </Card.Body>
         <Card.Footer>
-          {isCompress ? (
+          {isConvert ? (
             <button
               type="button"
               className="btn btn-secondary w-100"
@@ -109,9 +143,9 @@ const Compress = () => {
             <button
               type="button"
               className="btn btn-secondary w-100"
-              onClick={handleCompress}
+              onClick={handleConvertToJpg}
             >
-              Compress
+              Convert To JPG
             </button>
           )}
         </Card.Footer>
@@ -120,4 +154,4 @@ const Compress = () => {
   );
 };
 
-export default Compress;
+export default ConvertToJpg;
