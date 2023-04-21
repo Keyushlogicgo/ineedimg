@@ -23,6 +23,9 @@ const RotateImg = () => {
 
   const handleRotateImg = async () => {
     const imgData = await rotatedImage(image.file);
+    const newFile = await base64ToBlob(imgData);
+
+    image.file = newFile;
     setOutputImg(imgData);
   };
   let RottedCtn = 1;
@@ -30,14 +33,12 @@ const RotateImg = () => {
     return new Promise((resolve, reject) => {
       const img = new Image();
       img.onload = function () {
-        setRottedCtn(rottedCtn < 4 ? rottedCtn + 1 : 1);
         const canvas = document.createElement("canvas");
-        canvas.width =
-          rottedCtn === 2 || rottedCtn === 4 ? this.width : this.height;
-        canvas.height =
-          rottedCtn === 2 || rottedCtn === 4 ? this.height : this.width;
+        canvas.width = this.width;
+        canvas.height = this.height;
         const ctx = canvas.getContext("2d");
 
+        setRottedCtn(rottedCtn < 4 ? rottedCtn + 1 : 1);
         var x = 0;
         var y = 0;
         var w = this.width;
