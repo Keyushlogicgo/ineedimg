@@ -22,7 +22,7 @@ export const functionList = [
       "Compress JPG, PNG, SVG, and GIFs while saving space and maintaining quality.",
   },
   {
-    url: "/",
+    url: "/resize-image",
     icon: <ResizeSvg className={classList} />,
     title: "Resize IMAGE",
     description:
@@ -50,49 +50,49 @@ export const functionList = [
       "Turn JPG images to PNG and GIF. Choose several JPGs to create an animated GIF in seconds!",
   },
   {
-    url: "/",
+    url: "/photo-editor",
     icon: <PhotoEditorSvg className={classList} />,
     title: "Photo editor",
     description:
       "Spice up your pictures with text, effects, frames or stickers. Simple editing tools for your image needs.",
   },
   {
-    url: "/",
+    url: "/Watermark-image",
     icon: <WatermarkImageSvg className={classList} />,
     title: "Watermark IMAGE",
     description:
       "Stamp an image or text over your images in seconds. Choose the typography, transparency and position.",
   },
   {
-    url: "/",
+    url: "/meme-generator",
     icon: <MemeGeneratorSvg className={classList} />,
     title: "Meme generator",
     description:
       "Create your memes online with ease. Caption meme images or upload your pictures to make custom memes.",
   },
   {
-    url: "/",
+    url: "/rotate-img",
     icon: <RotateImageSvg className={classList} />,
     title: "Rotate IMAGE",
     description:
       "Rotate many images JPG, PNG or GIF at same time. Choose to rotate only landscape or portrait images!",
   },
   {
-    url: "/",
+    url: "/html-to-image",
     icon: <HtmlToImageSvg className={classList} />,
     title: "HTML to IMAGE",
     description:
       "Convert webpages in HTML to JPG or SVG. Copy and paste the URL of the page you want and convert it to IMAGE with a click.",
   },
   {
-    url: "/",
+    url: "/upscale-image",
     icon: <UpscaleImageSvg className={classList} />,
     title: "Upscale Image",
     description:
       "Enlarge your images with high resolution. Easily increase the size of your JPG and PNG images while maintaining visual quality.",
   },
   {
-    url: "/",
+    url: "/blur-face",
     icon: <BlurFaceSvg className={classList} />,
     title: "Blur face",
     description:

@@ -6,7 +6,7 @@ import Compress from "../pages/converter/Compress";
 import ConvertToJpg from "../pages/converter/ConvertToJpg";
 import ConvertFromJpg from "../pages/converter/ConvertFromJpg";
 import CropImg from "../pages/converter/CropImg";
-
+import RotateImg from "../pages/converter/RotateImg";
 
 export const publicRoute = [
   {
@@ -28,6 +28,10 @@ export const publicRoute = [
   {
     path: "/crop-img",
     element: <CropImg />,
+  },
+  {
+    path: "/rotate-img",
+    element: <RotateImg />,
   },
   {
     path: "*",

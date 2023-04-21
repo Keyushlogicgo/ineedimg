@@ -24,7 +24,6 @@ const CropImg = () => {
     image.file = await base64ToBlob(imgData);
   };
 
-  console.log(image);
   const convertImageToJPEG = (file) => {
     return new Promise((resolve, reject) => {
       const img = new Image();
@@ -33,8 +32,7 @@ const CropImg = () => {
         canvas.width = size.width;
         canvas.height = size.height;
         const ctx = canvas.getContext("2d");
-        ctx.fillStyle = "blue";
-        ctx.drawImage(this, -size.x || 0, -size.y || 0);
+        ctx.drawImage(this, -size.x, -size.y);
         const dataUrl = canvas.toDataURL("image/jpeg");
         resolve(dataUrl);
       };
@@ -55,12 +53,8 @@ const CropImg = () => {
     }
   };
 
-  //   const cropperRef = "";
   const onCrop = (e) => {
-    console.log("e", e.detail);
     setSize(e.detail);
-    // const cropper = cropperRef.current?.cropper;
-    // console.log(cropper.getCroppedCanvas().toDataURL());
   };
 
   return (

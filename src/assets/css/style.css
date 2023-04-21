@@ -15,6 +15,9 @@ a:hover {
 .h-200 {
   height: 200px;
 }
+.h-500 {
+  height: 500px;
+}
 .object-contain {
   object-fit: contain;
 }
