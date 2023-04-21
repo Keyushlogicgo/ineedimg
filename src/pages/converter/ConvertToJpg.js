@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import { Card, Col, Row } from "react-bootstrap";
-import Compressor from "compressorjs";
 import useHelper from "../../hook/useHelper";
-import ImageResizer from "react-image-file-resizer";
 
 const ConvertToJpg = () => {
   const { zipDownload, singleDownload, handlePhoto, handleRemove, photo } =
@@ -13,38 +11,11 @@ const ConvertToJpg = () => {
   const handleConvertToJpg = () => {
     var filesArr = Array.prototype.slice.call(photo);
     filesArr.forEach(async (item, key) => {
-      // new Compressor(item.file, {
-      //   // quality: 0.5,
-      //   convertTypes: "image/jpg",
-      //   success: (res) => {
-      //     // var fileName = res.name.substr(0, res.name.lastIndexOf(".")) + ".jpg";
-      //     console.log("new", res);
-      //     photo[key].file = res;
-      //   },
-      // });
-
-      // for (let i = 0; i < photo.length; i++) {
-      //   ImageResizer.imageFileResizer(
-      //     item.file,
-      //     300, // new width
-      //     300, // new height
-      //     "JPEG",
-      //     100, // quality
-      //     0,
-      //     async (uri) => {
-      //       // console.log(uri);
-      //       const fileData = await base64ToBlob(uri);
-      //       console.log("fileData", fileData);
-      //       photo[key].file = fileData;
-      //     },
-      //     "base64"
-      //   );
-      // }
-
       const imgData = await convertImageToJPEG(item.file);
-      console.log(imgData)
+      console.log(imgData);
       const newImg = await base64ToBlob(imgData);
-      console.log("newIMg", newImg);
+      // console.log("newIMg", newImg);
+      photo[key].file = newImg;
     });
     setIsConvert(true);
   };
@@ -76,7 +47,6 @@ const ConvertToJpg = () => {
       img.src = URL.createObjectURL(file);
     });
   };
-
 
   return (
     <>
