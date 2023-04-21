@@ -29,7 +29,7 @@ export const functionList = [
       "Define your dimensions, by percent or pixel, and resize your JPG, PNG, SVG, and GIF images.",
   },
   {
-    url: "/",
+    url: "/crop-img",
     icon: <CropSvg className={classList} />,
     title: "Crop IMAGE",
     description:
@@ -43,7 +43,7 @@ export const functionList = [
       "Turn PNG, GIF, TIF, PSD, SVG, WEBP, HEIC, or RAW format images to JPG in bulk with ease.",
   },
   {
-    url: "/",
+    url: "/convert-from-jpg",
     icon: <ConvertFromJpgSvg className={classList} />,
     title: "Convert from JPG",
     description:

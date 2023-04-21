@@ -12,18 +12,17 @@ a:hover {
   height: 42px;
   width: 42px;
 }
-.h-200{
+.h-200 {
   height: 200px;
-  
 }
-.object-contain{
+.object-contain {
   object-fit: contain;
 }
 .bg-blur {
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
 }
-.fs-14{
+.fs-14 {
   font-size: 14px;
 }
 .rounded-5 {
@@ -40,4 +39,7 @@ a:hover {
 }
 .rounded-20 {
   border-radius: 20px;
+}
+.cropBox {
+  height: 500px;
 }
