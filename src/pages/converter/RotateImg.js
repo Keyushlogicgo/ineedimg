@@ -9,14 +9,14 @@ const RotateImg = () => {
     url: "",
   });
   const [outputImg, setOutputImg] = useState("");
-  const [rottedCtn, setRottedCtn] = useState(1);
+  const [rottedCtn, setRottedCtn] = useState(0);
 
   const handleFile = (input) => {
     if (input.files && input.files[0]) {
       var render = new FileReader();
       render.onload = function (e) {
         setImage({ file: input.files[0], url: e.target.result });
-        handleRotateImg(input.files[0]);
+        setRottedCtn(0);
       };
       render.readAsDataURL(input.files[0]);
     }
@@ -27,11 +27,18 @@ const RotateImg = () => {
     // const newFile = await base64ToBlob(imgData);
     // image.file = newFile;
     // setOutputImg(imgData);
-    setRottedCtn(rottedCtn < 4 ? rottedCtn + 1 : 1);
-    var degrees = (rottedCtn - 1) * 90;
-    console.log("file", file);
-    const newData = await rotateImage(degrees, file || image.file);
+    setRottedCtn(rottedCtn < 3 ? rottedCtn + 1 : 0);
+  };
+
+  const handlePreviewFile = async () => {
+    var degrees = rottedCtn * 90;
+    const newData = await rotateImage(degrees, image.file);
     setOutputImg(newData);
+  };
+  const handleDownloadFile = async () => {
+    const newFile = await base64ToBlob(outputImg);
+    
+    singleDownload(newFile);
   };
 
   // const rotatedImage = (file) => {
@@ -114,6 +121,8 @@ const RotateImg = () => {
     });
   }
 
+  console.log(rottedCtn);
+
   return (
     <>
       <input
@@ -125,11 +134,11 @@ const RotateImg = () => {
         hidden
       />
       <div>
-        <label htmlFor="cropFile" className="btn btn-info">
+        <label htmlFor="cropFile" className="btn btn-info me-2">
           UPLOAD IMG
         </label>
         <button
-          className="btn btn-secondary mx-2"
+          className="btn btn-secondary me-2"
           onClick={() => {
             handleRotateImg(image.file);
           }}
@@ -138,7 +147,16 @@ const RotateImg = () => {
         </button>
         <button
           onClick={(e) => {
-            singleDownload(image.file);
+            handlePreviewFile();
+          }}
+          type="button"
+          className="btn btn-secondary me-2"
+        >
+          Preview
+        </button>
+        <button
+          onClick={(e) => {
+            handleDownloadFile(image.file);
           }}
           type="button"
           className="btn btn-secondary"
@@ -151,7 +169,7 @@ const RotateImg = () => {
           <Card className="py-5">
             <Card.Body>
               <Row>
-                {/* <Col md={6}>
+                <Col md={6}>
                   {image.url !== "" ? (
                     <img
                       src={image.url}
@@ -163,7 +181,7 @@ const RotateImg = () => {
                       }}
                     />
                   ) : null}
-                </Col> */}
+                </Col>
                 <Col md={6}>
                   {outputImg !== "" ? (
                     <img
