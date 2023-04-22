@@ -10,30 +10,20 @@ const RotateImg = () => {
     handleRemove,
     zipDownload,
     photo,
+    isUploading,
+    uploadedFileLength,
   } = useHelper();
-  const [image, setImage] = useState({
-    file: "",
-    url: "",
-  });
-  const [outputImg, setOutputImg] = useState("");
+
   const [rottedCtn, setRottedCtn] = useState(0);
   const [isRotated, setIsRotated] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleFile = (input) => {
-    if (input.files && input.files[0]) {
-      var render = new FileReader();
-      render.onload = function (e) {
-        setImage({ file: input.files[0], url: e.target.result });
-        setRottedCtn(0);
-      };
-      render.readAsDataURL(input.files[0]);
-    }
-  };
-
   const handleRotateImg = async () => {
     setRottedCtn(rottedCtn < 3 ? rottedCtn + 1 : 0);
   };
+
+  console.log(isUploading, uploadedFileLength);
+
   var convertCtn = 0;
   const handleConvert = () => {
     setIsLoading(true);
@@ -65,7 +55,6 @@ const RotateImg = () => {
           cx = 0,
           cy = 0;
 
-        // Calculate new canvas size and x/y coorditates for image
         switch (degree) {
           case 90:
             cw = img.height;
@@ -117,88 +106,113 @@ const RotateImg = () => {
         <button
           className="btn btn-secondary me-2"
           onClick={() => {
-            handleRotateImg(image.file);
+            handleRotateImg();
           }}
         >
           Rotate
         </button>
       </div>
-      {JSON.stringify(image) !== "{}" ? (
+      {JSON.stringify(photo) !== "{}" ? (
         <>
-          <Card>
+          <Card className="mt-3">
             <Card.Body>
               <Row>
-                {photo?.map((item, key) => {
-                  return (
-                    <Col
-                      xl={2}
-                      lg={3}
-                      md={4}
-                      sm={6}
-                      xs={12}
-                      key={key}
-                      className="mb-3"
-                    >
-                      <Card>
-                        <Card.Body className="p-0">
-                          <button
-                            onClick={(e) => {
-                              handleRemove(item.id);
-                            }}
-                            type="button"
-                            className="btn btn-danger hw-42 position-absolute end-0 top-0"
+                {isUploading
+                  ? Array(uploadedFileLength)
+                      .fill(1)
+                      .map((item, key) => {
+                        return (
+                          <Col
+                            xl={2}
+                            lg={3}
+                            md={4}
+                            sm={6}
+                            xs={12}
+                            key={key}
+                            className="mb-3"
                           >
-                            -
-                          </button>
+                            <Card className={`h-100 py-5`}>
+                              <Card.Body className="p-0 d-flex align-items-center justify-content-center">
+                                i am placeholder
+                              </Card.Body>
+                            </Card>
+                          </Col>
+                        );
+                      })
+                  : photo?.map((item, key) => {
+                      return (
+                        <Col
+                          xl={2}
+                          lg={3}
+                          md={4}
+                          sm={6}
+                          xs={12}
+                          key={key}
+                          className="mb-3"
+                        >
+                          <Card>
+                            <Card.Body className="p-0">
+                              <button
+                                onClick={(e) => {
+                                  handleRemove(item.id);
+                                }}
+                                type="button"
+                                className="btn btn-danger hw-42 position-absolute end-0 top-0 index-9"
+                              >
+                                -
+                              </button>
 
-                          <img
-                            className="h-200 w-100 object-contain"
-                            alt="..."
-                            style={{
-                              transform: `rotate(${rottedCtn * 90}deg)`,
-                            }}
-                            src={item.url}
-                          />
-                          <p className="text-center fs-14 mb-0 p-1">
-                            {item.name}
-                          </p>
-
-                          <button
-                            onClick={(e) => {
-                              singleDownload(item.file);
-                            }}
-                            type="button"
-                            className="btn btn-secondary w-100"
-                          >
-                            Download
-                          </button>
-                        </Card.Body>
-                      </Card>
-                    </Col>
-                  );
-                })}
+                              <img
+                                className="h-200 w-100 object-contain"
+                                alt="..."
+                                style={{
+                                  transform: `rotate(${rottedCtn * 90}deg)`,
+                                }}
+                                src={item.url}
+                              />
+                              <p className="text-center fs-14 mb-0 p-1">
+                                {item.name}
+                              </p>
+                              {isRotated ? (
+                                <button
+                                  onClick={(e) => {
+                                    singleDownload(item.file);
+                                  }}
+                                  type="button"
+                                  className="btn btn-secondary w-100"
+                                >
+                                  Download
+                                </button>
+                              ) : null}
+                            </Card.Body>
+                          </Card>
+                        </Col>
+                      );
+                    })}
               </Row>
             </Card.Body>
             <Card.Footer>
-              {isLoading ? (
+              {isLoading || isUploading ? (
                 <span className="btn w-100 btn-secondary">Loading...</span>
-              ) : !isRotated ? (
-                <button
-                  type="button"
-                  className="btn btn-secondary w-100"
-                  onClick={handleConvert}
-                >
-                  Convert
-                </button>
-              ) : (
-                <button
-                  type="button"
-                  className="btn btn-secondary w-100"
-                  onClick={() => zipDownload(photo, "myfile", "")}
-                >
-                  Download All
-                </button>
-              )}
+              ) : photo.length !== 0 ? (
+                !isRotated ? (
+                  <button
+                    type="button"
+                    className="btn btn-secondary w-100"
+                    onClick={handleConvert}
+                  >
+                    Convert
+                  </button>
+                ) : (
+                  <button
+                    type="button"
+                    className="btn btn-secondary w-100"
+                    onClick={() => zipDownload(photo, "myfile", "")}
+                  >
+                    Download All
+                  </button>
+                )
+              ) : null}
             </Card.Footer>
           </Card>
         </>
