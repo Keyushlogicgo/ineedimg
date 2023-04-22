@@ -1,13 +1,11 @@
-import React, { useRef, useState } from "react";
+import React, {  useState } from "react";
 // import Cropper from "react-easy-crop";
 import { Card, Col, Row } from "react-bootstrap";
 import useHelper from "../../hook/useHelper";
-import Cropper, { ReactCropperElement } from "react-cropper";
+import Cropper from "react-cropper";
 import "cropperjs/dist/cropper.css";
 
 const CropImg = () => {
-  const [crop, setCrop] = useState({ x: 0, y: 0 });
-  const [zoom, setZoom] = useState(1);
   const [size, setSize] = useState({});
   const [image, setImage] = useState({});
   const [dummyImg, setDummyImg] = useState("");
@@ -97,7 +95,7 @@ const CropImg = () => {
                   />
                 </Col>
                 <Col md={6}>
-                  <img src={dummyImg} className="w-100 h-100" />
+                  <img src={dummyImg} className="w-100 h-100" alt=".." />
                 </Col>
               </Row>
             </Card.Body>

@@ -21,6 +21,7 @@
     "react-easy-crop": "^4.7.4",
     "react-image-crop": "^10.0.9",
     "react-image-file-resizer": "^0.4.8",
+    "react-image-pan-zoom-rotate": "^1.6.0",
     "react-router-dom": "^6.10.0",
     "react-scripts": "5.0.1",
     "read": "^2.1.0",

@@ -20,6 +20,7 @@ const Compress = () => {
 
   const handleCompress = () => {
     setIsLoading(true);
+    console.time();
 
     var convertCtn = 0;
     var filesArr = Array.prototype.slice.call(photo);
@@ -34,6 +35,7 @@ const Compress = () => {
       if (filesArr.length === convertCtn) {
         setIsCompress(true);
         setIsLoading(false);
+        console.timeEnd();
       }
     });
   };
@@ -42,6 +44,7 @@ const Compress = () => {
     <>
       <Card>
         <Card.Body>
+          {photo?.length}
           <Row>
             <Col xl={2} lg={3} md={4} sm={6} xs={12} className="mb-3">
               <Card>
