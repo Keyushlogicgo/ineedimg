@@ -90,28 +90,32 @@ const RotateImg = () => {
 
   return (
     <>
-      <input
-        type="file"
-        id="cropFile"
-        multiple
-        onChange={(e) => {
-          handlePhoto(e.target);
-        }}
-        hidden
-      />
-      <div>
-        <label htmlFor="cropFile" className="btn btn-info me-2">
-          UPLOAD IMG
-        </label>
-        <button
-          className="btn btn-secondary me-2"
-          onClick={() => {
-            handleRotateImg();
-          }}
-        >
-          Rotate
-        </button>
-      </div>
+      {!isRotated ? (
+        <>
+          <input
+            type="file"
+            id="cropFile"
+            multiple
+            onChange={(e) => {
+              handlePhoto(e.target);
+            }}
+            hidden
+          />
+          <div>
+            <label htmlFor="cropFile" className="btn btn-info me-2">
+              UPLOAD IMG
+            </label>
+            <button
+              className="btn btn-secondary me-2"
+              onClick={() => {
+                handleRotateImg();
+              }}
+            >
+              Rotate
+            </button>
+          </div>
+        </>
+      ) : null}
       {JSON.stringify(photo) !== "{}" ? (
         <>
           <Card className="mt-3">
